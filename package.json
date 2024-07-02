@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "devex",
   "version": "1.0.0",
   "private": true,
   "engines": {
@@ -22,7 +22,8 @@
     "lint": "backstage-cli repo lint --since origin/master",
     "lint:all": "backstage-cli repo lint",
     "prettier:check": "prettier --check .",
-    "new": "backstage-cli new --scope internal"
+    "new": "backstage-cli new --scope internal",
+    "config:check": "backstage-cli config:check"
   },
   "workspaces": {
     "packages": [

@@ -2,9 +2,9 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: example-nodejs-template
-  title: Example Node.js Template
-  description: An example template for the scaffolder that creates a simple Node.js service
+  name: react-template
+  title: React Template
+  description: React Template
 spec:
   owner: user:guest
   type: service
@@ -34,6 +34,8 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
+            allowedOwners:
+              - Keiron-HealthTech
 
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
@@ -43,7 +45,7 @@ spec:
       name: Fetch Base
       action: fetch:template
       input:
-        url: ./content
+        url: https://github.com/Keiron-HealthTech/template-react
         values:
           name: ${{ parameters.name }}
 

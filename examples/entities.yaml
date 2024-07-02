@@ -4,6 +4,10 @@ apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
   name: examples
+  links:
+    - url: https://dashboard.example.com
+      title: My Dashboard
+      icon: dashboard
 spec:
   owner: guests
 ---
@@ -12,6 +16,9 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: example-website
+  annotations:
+    backstage.io/kubernetes-id: value
+    backstage.io/techdocs-ref: value
 spec:
   type: website
   lifecycle: experimental
@@ -24,6 +31,10 @@ apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
   name: example-grpc-api
+  links:
+    - url: https://dashboard.example.com
+      title: My Dashboard api
+      icon: dashboard
 spec:
   type: grpc
   lifecycle: experimental

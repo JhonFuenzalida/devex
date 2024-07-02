@@ -1,0 +1,29 @@
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-system
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: platform
+spec:
+  owner: group:platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: crm
+spec:
+  owner: group:crm
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: presupuesto
+spec:
+  owner: group:presupuestos
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: atenciones
+spec:
+  owner: group:atenciones

@@ -1,9 +1,9 @@
 app:
-  title: Scaffolded Backstage App
+  title: Devex
   baseUrl: http://localhost:3000
 
 organization:
-  name: My Company
+  name: ${ORGANIZATION_NAME}
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
@@ -28,8 +28,12 @@ backend:
   # This is for local development only, it is not recommended to use this in production
   # The production database configuration is stored in app-config.production.yaml
   database:
-    client: better-sqlite3
-    connection: ':memory:'
+    client: pg
+    connection:
+      host: ${POSTGRES_HOST}
+      port: ${POSTGRES_PORT}
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
 
 integrations:
@@ -37,7 +41,40 @@ integrations:
     - host: github.com
       # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
       # about setting up the GitHub integration here: https://backstage.io/docs/integrations/github/locations#configuration
-      token: ${GITHUB_TOKEN}
+      apps:
+        - appId: ${AUTH_ORG_APP_ID}
+          clientId: ${AUTH_ORG_CLIENT_ID}
+          clientSecret: ${AUTH_ORG_CLIENT_SECRET}
+          webhookSecret: ${AUTH_ORG_WEBHOOK_SECRET}
+          privateKey: |
+            -----BEGIN RSA PRIVATE KEY-----
+            MIIEpAIBAAKCAQEAtW3NxuGrkwL5XTplQNN9VVTpv457r9Baot5njEtF7V48pl35
+            rSeQgJHUN5InWx5kgxxMSiwW/pYb0XK/1tePokYdXjZKkGZyT8y4Zl5XndB4NhVe
+            Q9Ac98NiHWe4G+gJB+paKmtzAvW0uQgAxEaArOtywoyle2AWOyzCuR6BVhXh2/+Q
+            DnoZppZhpSr53nU0fGUbuESCSWs95uAooAQzr8uiIyPCBJcAss42eV1t9rmza5uN
+            cJ2X8lgNdEwFp7Sk9pIJfWLV4ssJG4E5xVL2ez8GRVmIP4aDSL1MIoCCIKOaFOLb
+            c7VRMLuqrGXk+/MHX+0FlUaW2aRMEp1bmd549QIDAQABAoIBADqsz08RrtZ1sMXo
+            29QyUadmNc6AuxmqDZX8zYo+0depkX3QiK3qTL536yUpvFaopqMMZNPcHHerfkWn
+            kclen5JAkMDmWAkJSNDsCXr56eYdBLOhB4Jw7N1oL/QIli9YRIttzElJxMFhS1hH
+            8U+I6ZaC8vNeXypecfIjULpj1jpLf491j61b3JpOkjmsSS7yKyhQdwQ1uchSQ6Uq
+            UMpdUgpd7Snyc9Fdeauoj3r0q+F81GDgm3OY2LAvScQYRVzFYddRgx5eCS3APqlb
+            FDx5sqj37MppHLs2mDyJqKDHl7b9QXEIAWLvsDMoPFHOY/NZEhrH9PBpHrfJkmoJ
+            KWMsfUECgYEA6Wrc+nLmrp+4+CUHUyINlY472BIgFTxKaLE+UczmY3Xnm8eiH7kL
+            +/WBHPrb/djI6UbPVuj3lyQd7y0Som9tVYsty0+PfztJ2DH27QDCDyk8AiZeLkVh
+            a0pn/1F/ZlZ0pI0u/uJxR1pR8cEBz0GQYOSmU6RRt8hzvAh5RL7pBEUCgYEAxvtS
+            Wj5lrY1a2eLo2xSh9TZF+G3cRSsImqkjPBfaU7C6zqRFVGqRlrRP5mu41MOAah/n
+            +iLER7FfSKsitgc+YIB53rBzYbh7Tc71f/kkzQ3VrU9hfwFdIbcGKTExgzKELbPw
+            qKfQqiersDj8T5YdKIS+rCOi7jPQkuUT5jMk5PECgYB8QtibN9oYso0dBVFt7139
+            9TdkotmTlIIkU99SWtt3rYf8RX3Il5GKs7rle6Lr86GZlonAwcs1GhQZhQw7j0hM
+            VwitCJDi8eQxBQBoUZP90DzTBCv1RBhFrtnIcVF6YKI+C68uH8ygaLPhGJfnBwde
+            nbryIjMivMLoIja041FXZQKBgQCkX1RGTCk+Vvjn6PQmlkK8B9uBP2+oi8YNzQ7Y
+            Q3QNkn6e2UCUXXxrHASs+euzhtR71mORVEsEVle59fU0nYM/wKHr/aMy5GyneAGB
+            d9SYt4b+JgcKHZxLj5+9Q2/9Syu5fV2eVRKgnSjM6CY1sHHh2NaR6NZdI9x2nFn1
+            3eXqYQKBgQCJPUrW/YAm0J2TTdTLyxq+zbF+Gw2eV5a1G1ir3jhZQC8s5Tf+THJU
+            xC/RiWP3BYKicoqmzSKMAwgBLYi4a8zd0XizCsl+mebMYEqbNUZ5GJpflMaET5UX
+            jQSw5o6Jc5ncL7oYhDkvmop7JbfSSZlSipy79Xme/6Bpny2KKr0OWw==
+            -----END RSA PRIVATE KEY-----
+
     ### Example for how to add your GitHub Enterprise instance using the API:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
@@ -51,49 +88,96 @@ proxy:
   #     target: 'https://example.com'
   #     changeOrigin: true
 
+
+kubernetes:
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - url: ${CLUSTER_URL}
+          name: ${CLUSTER_NAME_TO_DISPLAY}
+          authProvider: 'aws'
+          caData: ${EKS_CA_DATA}
+          authMetadata:
+            # kubernetes.io/aws-assume-role: ${ROLE_ARN_TO_ASSUME}
+            kubernetes.io/aws-external-id: ${ID_FROM_AWS_ADMIN}
+            kubernetes.io/x-k8s-aws-id: ${CLUSTER_NAME_IN_AWS_CONSOLE}
+aws:
+#   mainAccount:
+#     roleName: ${ROLE_ARN_TO_ASSUME}
+#     region: 'us-east-1'
+  accounts:
+    - accountId: '872535834453'
+      accessKeyId: ${AWS_ACCESS_KEY_ID}
+      secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
+      region: 'us-east-1'
+      roleName: ${ROLE_ARN_TO_ASSUME}
+#   accountDefaults: {}
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs
 # and an external cloud storage when deploying TechDocs for production use-case.
 # https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach
 techdocs:
-  builder: 'local' # Alternatives - 'external'
+  builder: 'local' # Alternatives - 'local' | 'external'
   generator:
-    runIn: 'docker' # Alternatives - 'local'
+    runIn: 'local' # Alternatives - 'local' | 'docker'
   publisher:
-    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+    type: 'local' # Alternatives - 'local' | 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
 auth:
   # see https://backstage.io/docs/auth/ to learn about auth providers
   providers:
     # See https://backstage.io/docs/auth/guest/provider
     guest: {}
+    github:
+      development:
+        clientId: ${AUTH_ORG_CLIENT_ID}
+        clientSecret: ${AUTH_ORG_CLIENT_SECRET}
+        signIn:
+          resolvers:
+            # Matches the GitHub username with the Backstage user entity name.
+            # See https://backstage.io/docs/auth/github/provider#resolvers for more resolvers.
+            - resolver: usernameMatchingUserEntityName
+            - resolver: emailMatchingUserEntityProfileEmail
+            - resolver: emailLocalPartMatchingUserEntityName
+    google:
+      development:
+        clientId: ${AUTH_GOOGLE_CLIENT_ID}
+        clientSecret: ${AUTH_GOOGLE_CLIENT_SECRET}
+        signIn:
+          resolvers:
+            # typically you would pick one of these
+            - resolver: emailMatchingUserEntityProfileEmail
+            - resolver: emailLocalPartMatchingUserEntityName
+            - resolver: emailMatchingUserEntityAnnotation
 
-scaffolder:
+# scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
 catalog:
+  providers:
+    githubOrg:
+      id: production
+      githubUrl: https://github.com
+      orgs: ['Keiron-HealthTech']
+      schedule:
+        initialDelay: { seconds: 30 }
+        frequency: { hours: 1 }
+        timeout: { minutes: 50 }
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
     - allow: [Component, System, API, Resource, Location]
   locations:
-    # Local example data, file locations are relative to the backend process, typically `packages/backend`
-    - type: file
-      target: ../../examples/entities.yaml
 
     # Local example template
     - type: file
       target: ../../examples/template/template.yaml
       rules:
         - allow: [Template]
-
-    # Local example organizational data
-    - type: file
-      target: ../../examples/org.yaml
-      rules:
-        - allow: [User, Group]
-
+  
     ## Uncomment these lines to add more example data
     # - type: url
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
@@ -103,3 +187,5 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
+permission:
+  enabled: true
